@@ -80,7 +80,7 @@ class MonGenMain
         if (type == "real")
         	fileName = "original creatures.txt";
         else if(type == "fake")
-        	fileName = "generated creatures.txt";
+        	fileName = "generated creatures_345.txt";
         else
         	System.out.println("Incorrect type!!");
         
