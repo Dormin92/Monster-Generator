@@ -1,5 +1,8 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +13,7 @@ class MonGenMain
 {
 	static int fooled = 0;
 	static int notFooled = 0;
-    public static void main(String argsp[])
+    public static void main(String[] args)
     {
     	Description[] d = new Description[2];
     	boolean play = true;
@@ -50,7 +53,16 @@ class MonGenMain
 	        if (d[input].IsGenerated())
 	        {
 	        	System.out.println("You got it! That was a computer generated description!");
-	        	notFooled++;
+	        	DataManager(true);
+	        	System.out.println("Would you like to go again? (y/n)");
+	        	String s = scan.next();
+	        	if(s != "y")
+	        		play = false;
+	        }
+	        else
+	        {
+	        	System.out.println("Nope! A human wrote that description!");
+	        	DataManager(false);
 	        	System.out.println("Would you like to go again? (y/n)");
 	        	String s = scan.next();
 	        	if(s != "y")
@@ -72,7 +84,8 @@ class MonGenMain
         else
         	System.out.println("Incorrect type!!");
         
-        try (BufferedReader br = new BufferedReader(new FileReader("src/" + fileName));) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/" + fileName));) 
+        {
 
             // read the first line from the text file
             String line = br.readLine();
@@ -97,5 +110,42 @@ class MonGenMain
         return descriptions;
     }
     
+    private static void DataManager(boolean playerGuessCorrectly)
+    {
+    	BufferedWriter bw = null;
+    	try (BufferedReader br = new BufferedReader(new FileReader("src/results.txt"));) 
+        {
+
+            String[] lines = new String[2];
+            lines[0] = br.readLine();
+            lines[1] = br.readLine();
+            
+            if(playerGuessCorrectly)
+            {
+            	String cGuesses[] = lines[0].split("=");
+            	int noOfCGuesses = Integer.parseInt(cGuesses[1]);
+            	noOfCGuesses++;
+            	lines[0] = cGuesses[0] + "=" + noOfCGuesses;
+            }
+            else
+            {
+            	String wGuesses[] = lines[1].split("=");
+            	int noOfWGuesses = Integer.parseInt(wGuesses[1]);
+            	noOfWGuesses++;
+            	lines[0] = wGuesses[0] + "=" + noOfWGuesses;
+            }
+            
+			File file = new File("src/results.txt");
+			
+			FileWriter fw = new FileWriter(file);
+			bw = new BufferedWriter(fw);
+			bw.write(lines[0] + "\n" + lines[1]);
+			bw.close();
+        } 
+    	catch (IOException ioe) 
+    	{
+            ioe.printStackTrace();
+        }
+    }
     
 }
