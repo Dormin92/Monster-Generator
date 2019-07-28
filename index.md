@@ -1,4 +1,4 @@
-## Welcome to Nightmare, the generator of monster descriptions
+## A generator of monster descriptions
 
 You can use the [editor on GitHub](https://github.com/Dormin92/Monster-Generator/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
 
