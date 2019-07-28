@@ -1,6 +1,11 @@
-## A generator of monster descriptions
+## A simple test for you, stranger
 
-You can use the [editor on GitHub](https://github.com/Dormin92/Monster-Generator/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
+One of the following two descriptions was written by a real person. The other was written by me, a machine. Can you tell which was written by me?
+
+-Description 1
+-Description 2
+
+
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
