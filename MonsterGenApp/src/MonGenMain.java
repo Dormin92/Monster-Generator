@@ -17,23 +17,33 @@ class MonGenMain
     {
     	Description[] d = new Description[2];
     	boolean play = true;
-    	List<Description> originals = readDescriptionFromCSV("real");
-        List<Description> generated = readDescriptionFromCSV("fake");
+    	List<Description> originals = readDescriptionFromCSV("original creatures.txt", typeOfDesc.REAL);
+        List<Description> generated117 = readDescriptionFromCSV("generated creatures_117.txt", typeOfDesc.FAKE117);
+        List<Description> generated345 = readDescriptionFromCSV("generated creatures_345.txt", typeOfDesc.FAKE345);
         Random rand = new Random();
         Scanner scan = new Scanner(System.in);
     	while(play)
     	{
-	        int order = rand.nextInt(2);
+	        int order = rand.nextInt(4);
 	        
-	        if (order == 0)
+	        switch(order)
 	        {
+	        case 0:
 	        	d[0] = originals.get(rand.nextInt(originals.size()));
-	        	d[1] = generated.get(rand.nextInt(generated.size()));
-	        }
-	        else
-	        {
+	        	d[1] = generated117.get(rand.nextInt(generated117.size()));
+	        	break;
+	        case 1:
+	        	d[0] = generated117.get(rand.nextInt(generated117.size()));
 	        	d[1] = originals.get(rand.nextInt(originals.size()));
-	        	d[0] = generated.get(rand.nextInt(generated.size()));
+	        	break;
+	        case 2:
+	        	d[0] = originals.get(rand.nextInt(originals.size()));
+	        	d[1] = generated345.get(rand.nextInt(generated345.size()));
+	        	break;
+	        case 3:
+	        	d[0] = generated345.get(rand.nextInt(generated345.size()));
+	        	d[1] = originals.get(rand.nextInt(originals.size()));
+	        	break;
 	        }
 	        
 	        for(int i = 0; i < 2; i++)
@@ -50,10 +60,18 @@ class MonGenMain
 	        while(input != 1 && input != 2);
 	        input--;
 	        
-	        if (d[input].IsGenerated())
+	        String fileName = "results117.txt";
+	        
+	        for (int i = 0; i < d.length; i++)
 	        {
-	        	System.out.println("You got it! That was a computer generated description!");
-	        	DataManager(true);
+	        	if(d[i].DescType() == typeOfDesc.FAKE345)
+	        		fileName = "results345.txt";
+	        }
+	        
+	        if (d[input].DescType() == typeOfDesc.REAL)
+	        {
+	        	System.out.println("Nope! A human wrote that description!");
+	        	DataManager(d.clone()[input].DescType(), fileName);
 	        	System.out.println("Would you like to go again? (y/n)");
 	        	String s = scan.next();
 	        	if(s != "y")
@@ -61,8 +79,8 @@ class MonGenMain
 	        }
 	        else
 	        {
-	        	System.out.println("Nope! A human wrote that description!");
-	        	DataManager(false);
+	        	System.out.println("You got it! That was a computer generated description!");
+	        	DataManager(d[input].DescType(), fileName);
 	        	System.out.println("Would you like to go again? (y/n)");
 	        	String s = scan.next();
 	        	if(s != "y")
@@ -73,16 +91,9 @@ class MonGenMain
         
     }
     
-    private static List<Description> readDescriptionFromCSV(String type) {
+    private static List<Description> readDescriptionFromCSV(String fileName, typeOfDesc type) {
     	
         List<Description> descriptions = new ArrayList<>();
-        String fileName = "";
-        if (type == "real")
-        	fileName = "original creatures.txt";
-        else if(type == "fake")
-        	fileName = "generated creatures_345.txt";
-        else
-        	System.out.println("Incorrect type!!");
         
         try (BufferedReader br = new BufferedReader(new FileReader("src/" + fileName));) 
         {
@@ -110,17 +121,17 @@ class MonGenMain
         return descriptions;
     }
     
-    private static void DataManager(boolean playerGuessCorrectly)
+    private static void DataManager(typeOfDesc descType, String fileName)
     {
     	BufferedWriter bw = null;
-    	try (BufferedReader br = new BufferedReader(new FileReader("src/results.txt"));) 
+    	try (BufferedReader br = new BufferedReader(new FileReader("src/" + fileName));) 
         {
 
             String[] lines = new String[2];
             lines[0] = br.readLine();
             lines[1] = br.readLine();
             
-            if(playerGuessCorrectly)
+            if(descType == typeOfDesc.REAL)
             {
             	String cGuesses[] = lines[0].split("=");
             	int noOfCGuesses = Integer.parseInt(cGuesses[1]);
@@ -132,10 +143,10 @@ class MonGenMain
             	String wGuesses[] = lines[1].split("=");
             	int noOfWGuesses = Integer.parseInt(wGuesses[1]);
             	noOfWGuesses++;
-            	lines[0] = wGuesses[0] + "=" + noOfWGuesses;
+            	lines[1] = wGuesses[0] + "=" + noOfWGuesses;
             }
             
-			File file = new File("src/results.txt");
+			File file = new File("src/" + fileName);
 			
 			FileWriter fw = new FileWriter(file);
 			bw = new BufferedWriter(fw);

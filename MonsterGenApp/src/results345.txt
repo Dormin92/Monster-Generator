@@ -1,2 +1,2 @@
 CorrectGuesses=0
-TimesFooled=0
+TimesFooled=1
