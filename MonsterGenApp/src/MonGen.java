@@ -9,11 +9,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-class MonGenMain
+class MonGen
 {
-	static int fooled = 0;
-	static int notFooled = 0;
-    public static void main(String[] args)
+    public MonGen()
     {
     	Description[] d = new Description[2];
     	boolean play = true;
