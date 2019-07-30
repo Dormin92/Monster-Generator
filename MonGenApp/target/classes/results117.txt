@@ -1,0 +1,2 @@
+CorrectGuesses=2
+TimesFooled=1

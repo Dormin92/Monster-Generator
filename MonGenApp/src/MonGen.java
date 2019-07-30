@@ -1,20 +1,19 @@
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
+//import java.io.BufferedWriter;
+//import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
+//import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
+//import java.util.Scanner;
 
 class MonGen
 {
-	
 	List<Description> originals;
     List<Description> generated117;
-    List<Description> generated345;
+    List<Description> generated345;  
     
     /*
     public static void main(String [] args)
@@ -166,6 +165,7 @@ class MonGen
         return descriptions;
     }
     
+    /*
     private static void DataManager(typeOfDesc descType, String fileName)
     {
     	BufferedWriter bw = null;
@@ -203,5 +203,6 @@ class MonGen
             ioe.printStackTrace();
         }
     }
+    */
     
 }

@@ -3,7 +3,7 @@
   <display-name>MonGenApp</display-name>
   
   
-  <!-- Define servlet, named helloServlet -->
+  <!-- Define servlet, named genServlet -->
 <servlet>
    <servlet-name>genServlet</servlet-name>
    <servlet-class>GenServlet</servlet-class>
