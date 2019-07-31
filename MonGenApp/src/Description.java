@@ -15,7 +15,7 @@ public class Description
     	return this.descriptionText;
     }
     
-    public typeOfDesc DescType()
+    public typeOfDesc getDescType()
     {
     	return type;
     }

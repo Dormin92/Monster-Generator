@@ -10,9 +10,10 @@ public class MySQLAccess {
     private Statement statement = null;
     //private PreparedStatement preparedStatement = null;
     private ResultSet resultSet = null;
-    private String[] monsterDescriptions = new String[2];
+    private Description[] monsterDescriptions = new Description[2];
 
-    public String[] GetMonsterDescriptions() throws Exception {
+    public Description[] GetMonsterDescriptions() throws Exception 
+    {
         try {
             // This will load the MySQL driver, each DB has its own driver
             Class.forName("com.mysql.jdbc.Driver");
@@ -25,15 +26,8 @@ public class MySQLAccess {
             resultSet = statement.executeQuery("select description from saldb.descReal order by rand() limit 1;");
             while(resultSet.next())
             {
-            	monsterDescriptions[0] = resultSet.getString("description");
+            	monsterDescriptions[0] = new Description(typeOfDesc.REAL, resultSet.getString("description"));
             }
-            
-            /*
-            preparedStatement = connect.prepareStatement("SELECT description FROM saldb.descReal WHERE id= ?;");
-            preparedStatement.setInt(1, index);
-            resultSet = preparedStatement.executeQuery();
-            monsterDescriptions[0] = resultSet.getString("description");
-            */
             
             int index = rand.nextInt(2);
             switch(index)
@@ -43,7 +37,7 @@ public class MySQLAccess {
                 resultSet = statement.executeQuery("select description from saldb.desc117 order by rand() limit 1;");
                 while(resultSet.next())
                 {
-                	monsterDescriptions[1] = resultSet.getString("description");
+                	monsterDescriptions[1] = new Description(typeOfDesc.FAKE117, resultSet.getString("description"));
                 }
 	            break;
             case 1:
@@ -51,19 +45,48 @@ public class MySQLAccess {
                 resultSet = statement.executeQuery("select description from saldb.desc345 order by rand() limit 1;");
                 while(resultSet.next())
                 {
-                	monsterDescriptions[1] = resultSet.getString("description");
+                	monsterDescriptions[1] = new Description(typeOfDesc.FAKE345, resultSet.getString("description"));
                 }
 	            break;
             }
 
         } catch (Exception e) {
-        	monsterDescriptions[0] = ("It didn't woooorrrkkkk.");
             throw e;
         } finally {
             close();
         }
         return monsterDescriptions;
 
+    }
+    
+    public void IncrementResults(typeOfDesc TOD, boolean guessedCorrectly) throws Exception
+    {
+    	String modelToIncrement = null;
+    	String columnToIncrement = null;
+    	if(TOD == typeOfDesc.FAKE117)
+    		modelToIncrement = "117";
+    	else if(TOD == typeOfDesc.FAKE345)
+    		modelToIncrement = "345";
+    	
+    	if(guessedCorrectly)
+    		columnToIncrement = "timesCaught";
+    	else
+    		columnToIncrement = "timesFooled";
+    	
+    	try {
+            // This will load the MySQL driver, each DB has its own driver
+            Class.forName("com.mysql.jdbc.Driver");
+            // Setup the connection with the DB
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/saldb?" + "user=sal&password=KyqLV1zkHqcjxi4!");
+            
+            statement = connect.createStatement();
+            statement.executeUpdate("UPDATE saldb.results SET " + columnToIncrement + " = " + columnToIncrement + " + 1 WHERE model=" + modelToIncrement + ";");
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            close();
+        }
     }
 
     // You need to close the resultSet
