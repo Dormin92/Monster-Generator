@@ -1,5 +1,7 @@
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
@@ -32,6 +34,12 @@ public class GenServlet extends HttpServlet
 			e.printStackTrace();
 		}
 
+		request.setAttribute("Description1", monsterDescriptions[0]);
+		request.setAttribute("Description2", monsterDescriptions[1]);
+	    RequestDispatcher view = request.getRequestDispatcher("WEB-INF/templates/Template.jsp");      
+	    view.forward(request, response);
+		
+		/*
 		ServletOutputStream out = response.getOutputStream();
     	out.println("<html>");
     	out.println("<head><title>Hello Servlet</title></head>");
@@ -40,6 +48,7 @@ public class GenServlet extends HttpServlet
     	out.println("2: " + monsterDescriptions[1]);
         out.println("</body>");
     	out.println("<html>");
+    	*/
 
 	}
 
