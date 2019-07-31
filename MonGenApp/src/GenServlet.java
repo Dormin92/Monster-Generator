@@ -35,6 +35,7 @@ public class GenServlet extends HttpServlet
 
 		request.setAttribute("Description1", monsterDescriptions[0].getText());
 		request.setAttribute("Description2", monsterDescriptions[1].getText());
+		//response.sendRedirect("WEB-INF/templates/Template.jsp");
 	    RequestDispatcher view = request.getRequestDispatcher("WEB-INF/templates/Template.jsp");      
 	    view.forward(request, response);
 
@@ -44,6 +45,7 @@ public class GenServlet extends HttpServlet
 	{
 		// TODO Auto-generated method stub
 		doGet(request, response);
+		
 		int button = Integer.parseInt(request.getParameter("button"));
 		typeOfDesc TOD = typeOfDesc.FAKE117;
 		
@@ -75,7 +77,8 @@ public class GenServlet extends HttpServlet
 				e.printStackTrace();
 			}
 		}
-        request.getRequestDispatcher("WEB-INF/templates/Template.jsp").forward(request, response);
+        //request.getRequestDispatcher("WEB-INF/templates/Template.jsp").forward(request, response);
+        response.sendRedirect("WEB-INF/templates/Template.jsp");
 
 	}
 
