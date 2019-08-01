@@ -1,6 +1,5 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
-//import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Random;
@@ -8,20 +7,18 @@ import java.util.Random;
 public class MySQLAccess {
     private Connection connect = null;
     private Statement statement = null;
-    //private PreparedStatement preparedStatement = null;
     private ResultSet resultSet = null;
     private Description[] monsterDescriptions = new Description[2];
 
     public Description[] GetMonsterDescriptions() throws Exception 
     {
+    	Random rand = new Random();
         try {
             // This will load the MySQL driver, each DB has its own driver
             Class.forName("com.mysql.jdbc.Driver");
             // Setup the connection with the DB
             connect = DriverManager.getConnection("jdbc:mysql://localhost/saldb?" + "user=sal&password=KyqLV1zkHqcjxi4!");
-          
-            Random rand = new Random();
-            
+
             statement = connect.createStatement();
             resultSet = statement.executeQuery("select description from saldb.descReal order by rand() limit 1;");
             while(resultSet.next())
@@ -54,6 +51,12 @@ public class MySQLAccess {
             throw e;
         } finally {
             close();
+        }
+        if(rand.nextBoolean())
+        {
+        	Description temp = monsterDescriptions[0];
+        	monsterDescriptions[0] = monsterDescriptions[1];
+        	monsterDescriptions[1] = temp;
         }
         return monsterDescriptions;
 
